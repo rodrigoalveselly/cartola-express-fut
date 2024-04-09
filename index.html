@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Criador de Array - Cartola Express</title>
+    <link rel="shortcut icon" href="./logo.png" type="image/x-icon">
+    <link rel="stylesheet" href="./style.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <script src="https://kit.fontawesome.com/07daaf1f72.js" crossorigin="anonymous"></script>
+</head>
+
+<body onload="atualizaInicial(taticaAtual)">
+
+    <header>
+        <nav class="navbar navbar-expand-lg blue">
+            <div class="container">
+              <a class="navbar-brand" href="#"><img src="./logo.png" class="img-logo" alt=""></a>
+              <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+              </button>
+              <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                <div class="navbar-nav">
+                  <a class="nav-link text-color" href="#">Home</a>
+                  <a class="nav-link text-color" data-bs-toggle="modal" data-bs-target="#exampleModal" href="#">Como Funciona?</a>
+                </div>
+              </div>
+            </div>
+          </nav>
+    </header>
+
+    <main class="container">
+        <div class="row mt-5">
+            <div class="col">
+                <input id="id-input" class="form-control form-control-lg" type="number" placeholder="Insira ID do Torneio" aria-label=".form-control-lg example">
+            </div>
+            <div class="col mt-1">
+                <input class="btn btn-primary blue text-color" type="button" value="Enviar" onclick="getPlayers()">
+            </div>
+            <div class="col-auto mt-1">
+                <input class="btn btn-primary blue text-color" type="button" value="Baixar JSON" onclick="downloadArray()">
+            </div>
+        </div>
+
+        <div class="row mt-3">
+            <div class="col-auto mt-3">
+                <label for="totalDefesas" class="col-form-label">Nº Defesas</label>
+            </div>
+            <div class="col-1 mt-3">
+                <input class="form-control form-control-sm form-pra mt-1" id="totalDefesas" name="totalDefesas" type="text" value="6" aria-label=".form-control-sm example" onchange="atualizaInicial(taticaAtual)">
+            </div>
+            <div class="col-auto mt-3">
+                <label for="totalTeams" class="col-form-label">Formação</label>
+            </div>
+            <div class="col-auto mt-3">
+                <select class="form-select" id="taticaSelect" aria-label="Default select example" onchange="selectedTatica()">
+                    <option value="1" selected>4-3-3</option>
+                    <option value="2">4-4-2</option>
+                    <option value="3">5-2-3</option>
+                    <option value="4">5-3-2</option>
+                    <option value="5">5-4-1</option>
+                  </select>
+            </div>
+            <div class="col-auto mt-3 ms-3">
+                <input class="btn btn-primarys blue text-color" id="contaMei" type="button" value="MEI: 75">
+            </div>
+            <div class="col-auto mt-3 ms-3">
+                <input class="btn btn-primarys blue text-color" id="contaAta" type="button" value="ATA: 75">
+            </div>
+            <div class="col-auto mt-3 ms-3">
+                <p class="fw-bolder mt-2"><span id="textTotalOfensivo">25</span> variações OFENSIVAS para <span id="textTotalDefensivo">6</span> DEFESAS selecionadas</p>
+            </div>
+        </div>
+        
+        <div class="form-check form-check-inline mt-3">
+            <input class="form-check-input" type="radio" name="posRadioCheck" id="posRadio1" value="all">
+            <label class="form-check-label" for="inlineRadio1">TODOS</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="posRadioCheck" id="posRadio3" value="defender">
+            <label class="form-check-label" for="inlineRadio3">GOL/DEF</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="posRadioCheck" id="posRadio5" value="midfielder" checked>
+            <label class="form-check-label" for="inlineRadio3">MEI/ATA</label>
+          </div>
+
+        <div class="row mt-3">
+            <div class="col overflow-auto" id="table-players">
+                <table class="table">
+                    <thead>
+                      <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">Nome</th>
+                        <th scope="col">Posição</th>
+                        <th scope="col">Preço</th>
+                        <th scope="col">PRA</th>
+                        <th scope="col">Adicionar</th>
+                        <th scope="col"><i class="fa-solid fa-check"></i></th>
+                      </tr>
+                    </thead>
+                    <tbody id="table-body">
+                    </tbody>
+                  </table>
+            </div>
+        </div>
+
+    </main>
+
+    <footer>
+        <nav class="blue navbar navbar-expand-lg fixed-bottom">
+            <div class="container justify-content-center">
+              <a class="navbar-brand text-color" href="#">Expresso Cartola</a>
+            </div>
+          </nav>
+    </footer>
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Como Funciona?</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>1º - Insira o ID do torneio desejado e clique em "Enviar".</p>
+                <p>2º - No campo "PRA" insira o valor esperado para o jogador e clique em "ADD". O sinal de "check" aparecerá ao lado do jogador que foi adicionado.</p>
+                <p>3º - Após adicionar todos jogadores desejados, clique no botão "Baixar JSON".</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="./js/api.js"></script>
+    <script src="./js/script.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+</body>
+
+</html>

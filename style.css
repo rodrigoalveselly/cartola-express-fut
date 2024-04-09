@@ -1,0 +1,33 @@
+main {
+    height: 100% !important;
+    box-sizing: border-box !important;
+}
+
+.form-pra {
+    width: 60px !important;
+}
+
+#table-players {
+    height: 55vh !important;
+}
+
+.img-logo {
+    width: 100px !important;
+}
+
+.blue {
+    background-color: #0000B8 !important; 
+}
+
+.text-color {
+    color: #fff !important;
+    font-weight: 600 !important;
+}
+
+.text-color:hover {
+    color: #FF7500 !important;
+}
+
+#contaPlayers {
+    width: 110px;
+}
