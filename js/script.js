@@ -116,7 +116,7 @@ function adicionaElementos(players,filtro = "midfielder") {
         const tdPrice = document.createElement('td')
         tdPrice.innerHTML = player.price
         const tdPra = document.createElement('td')
-        tdPra.innerHTML = `<input class="form-control form-control-sm form-pra" id="input-${player.id}" type="text" onfocusin="salvaVariavel(${player.id})" onfocusout="alteraContagem(${player.id}, '${translatePosition(player.position)}')" placeholder="PRA" aria-label=".form-control-sm example">`
+        tdPra.innerHTML = `<input class="form-control form-control-sm form-pra" id="input-${player.id}" type="text" placeholder="PRA" aria-label=".form-control-sm example">`
         const tdBtn = document.createElement('td')
         const btn = document.createElement('button')
         btn.setAttribute('type', 'button')
@@ -139,43 +139,62 @@ function adicionaElementos(players,filtro = "midfielder") {
 
     })
 }
+function alteraContagem(id,pos,fator,xAp ) {
+    console.log(xAp, "To na função")
 
-function salvaVariavel(id) {
-    const xAp = Number(document.getElementById(`input-${id}`).value)
-    variavelGaveta = xAp
-}
-
-function alteraContagem(id,pos) {
-    const xAp = Number(document.getElementById(`input-${id}`).value)
-    if (xAp > variavelGaveta) {
+    if (fator === "subtrai") {
         if (pos === "ATA") {
             nAtacantes -= xAp
         } else if (pos === "MEI") {
             nMeias -= xAp
         }
 
-    } else {
+    } else if (fator === "soma") {
         if (pos === "ATA") {
-            nAtacantes += variavelGaveta
+            nAtacantes += xAp
         } else if (pos === "MEI") {
-            nMeias += variavelGaveta
+            nMeias += xAp
         }
     }
-    variavelGaveta = 0
+
     diminuiAparicao()
 }
 
 function addArray(players, id) {
-        const pra = Number(document.getElementById(`input-${id}`).value)
         const player = players.find(player => player.id === id)
-        const eachPlayer = [player.id, player.price, pra,player.name,translatePosition(player.position)]
+        player.xPa = Number(document.getElementById(`input-${id}`).value)
+        const eachPlayer = [player.id, player.price, player.xPa,player.name,translatePosition(player.position)]
         const isPlayerInArray = arrayPlayers.some(item => item[0] === player.id)
-        if (isPlayerInArray) return alert('Player já esta no Array!')
-        arrayPlayers.push(eachPlayer)
         const tr = document.getElementById(`check-${player.id}`)
+        const tdToRemove = document.getElementById(`icon-${player.id}`)
+
+
+        if (isPlayerInArray) {
+            const indexToRemove = arrayPlayers.findIndex(item => item[0] === player.id);
+            arrayPlayers.splice(indexToRemove, 1)
+            alteraContagem(player.id,translatePosition(player.position),"soma",player.xPa)
+            tdToRemove.innerHTML = ``
+            return
+        } 
+
+        
+        if (tdToRemove) {
+            player.xPa = Number(document.getElementById(`input-${id}`).value)
+            arrayPlayers.push(eachPlayer)
+            alteraContagem(player.id,translatePosition(player.position),"subtrai",player.xPa)
+            tdToRemove.innerHTML = `<i class="fa-solid fa-check"></i>`
+            tr.appendChild(tdToRemove)
+            return
+        }
+
         const tdCheck = document.createElement('td')
+        tdCheck.id = `icon-${player.id}`
+        player.xPa = Number(document.getElementById(`input-${id}`).value)
+        arrayPlayers.push(eachPlayer)
+        alteraContagem(player.id,translatePosition(player.position),"subtrai",player.xPa)
         tdCheck.innerHTML = `<i class="fa-solid fa-check"></i>`
         tr.appendChild(tdCheck)
+        
 }
 
 function downloadArray() {
@@ -256,6 +275,5 @@ function atualizaInicial(tatica = 1) {
 function diminuiAparicao() {
     contaAta.value = `ATA: ${nAtacantes}`
     contaMei.value = `MEI: ${nMeias}`
-
 }
 
