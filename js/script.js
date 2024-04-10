@@ -20,7 +20,6 @@ let nMeias = 0
 let taticaAtual = 1
 let contadorAtacantes = 0
 let contadorMeias = 0
-let variavelGaveta = 0
 let filtroDb
 
 
@@ -88,7 +87,7 @@ document.querySelectorAll('input[name="posRadioCheck"]').forEach(radio => {
 
 function adicionaElementos(players,filtro = "midfielder") {
     let playersFiltrados
-    console.log(filtro)
+
     if (filtro === "all") {
         playersFiltrados = [...players]
     } else if (filtro === "defender"){
