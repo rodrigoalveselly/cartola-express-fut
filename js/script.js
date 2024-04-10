@@ -139,8 +139,6 @@ function adicionaElementos(players,filtro = "midfielder") {
     })
 }
 function alteraContagem(id,pos,fator,xAp ) {
-    console.log(xAp, "To na função")
-
     if (fator === "subtrai") {
         if (pos === "ATA") {
             nAtacantes -= xAp
