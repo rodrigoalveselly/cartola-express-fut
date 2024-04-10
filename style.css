@@ -19,6 +19,11 @@ main {
     background-color: #0000B8 !important; 
 }
 
+.red {
+    background-color: #da0000 !important;
+    border-color: #da0000 !important;
+}
+
 .text-color {
     color: #fff !important;
     font-weight: 600 !important;

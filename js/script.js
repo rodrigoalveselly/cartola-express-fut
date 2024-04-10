@@ -118,6 +118,7 @@ function adicionaElementos(players,filtro = "midfielder") {
         tdPra.innerHTML = `<input class="form-control form-control-sm form-pra" id="input-${player.id}" type="text" placeholder="PRA" aria-label=".form-control-sm example">`
         const tdBtn = document.createElement('td')
         const btn = document.createElement('button')
+        btn.id = `btn-${player.id}`
         btn.setAttribute('type', 'button')
         btn.setAttribute('onclick', `addArray(playersDB, ${player.id})`)
         btn.classList.add('btn')
@@ -164,6 +165,8 @@ function addArray(players, id) {
         const isPlayerInArray = arrayPlayers.some(item => item[0] === player.id)
         const tr = document.getElementById(`check-${player.id}`)
         const tdToRemove = document.getElementById(`icon-${player.id}`)
+        const inputPra = document.getElementById(`input-${id}`)
+        const btn = document.getElementById(`btn-${id}`)
 
 
         if (isPlayerInArray) {
@@ -171,6 +174,10 @@ function addArray(players, id) {
             arrayPlayers.splice(indexToRemove, 1)
             alteraContagem(player.id,translatePosition(player.position),"soma",player.xPa)
             tdToRemove.innerHTML = ``
+            inputPra.disabled = false
+            btn.classList.remove('red')
+            btn.classList.add('blue')
+            btn.innerText = 'Add'
             return
         } 
 
@@ -181,6 +188,10 @@ function addArray(players, id) {
             alteraContagem(player.id,translatePosition(player.position),"subtrai",player.xPa)
             tdToRemove.innerHTML = `<i class="fa-solid fa-check"></i>`
             tr.appendChild(tdToRemove)
+            inputPra.disabled = true
+            btn.classList.remove('blue')
+            btn.classList.add('red')
+            btn.innerText = ' X '
             return
         }
 
@@ -191,7 +202,10 @@ function addArray(players, id) {
         alteraContagem(player.id,translatePosition(player.position),"subtrai",player.xPa)
         tdCheck.innerHTML = `<i class="fa-solid fa-check"></i>`
         tr.appendChild(tdCheck)
-        
+        inputPra.disabled = true
+        btn.classList.remove('blue')
+        btn.classList.add('red')
+        btn.innerText = ' X '
 }
 
 function downloadArray() {
